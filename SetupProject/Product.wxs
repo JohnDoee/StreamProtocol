@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="StreamProtocol" Language="1033" Version="1.0.0" Manufacturer="TidalStream" UpgradeCode="ba02c215-2004-43ea-b871-c20f33b0c95d">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" InstallPrivileges="elevated" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <Feature Id="Complete" Title="StreamProtocol" Description='The complete package.'
+      Display='expand' Level='1' ConfigurableDirectory='INSTALLFOLDER'>
+      <ComponentGroupRef Id="ProductComponents" />
+      <Feature Id="ShortcutFeature" Title="Create Start Menu Shortcuts" Level="1">
+        <ComponentRef Id="ApplicationShortcut" />
+      </Feature>
+      <Feature Id="AutostartFeature" Title="Start StreamProtocol on Boot" Level="1">
+        <ComponentRef Id="CreateStartupShortcut" />
+      </Feature>
+    </Feature>
+      
+    <Icon Id="StreamProtocol.ico" SourceFile="$(var.StreamProtocol.TargetDir)Resources\trayicon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="StreamProtocol.ico" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+  
+    <WixVariable Id="WixUILicenseRtf" Value="LICENSE.rtf" />
+      
+    <UI>
+      <UIRef Id="WixUI_FeatureTree" />
+
+      <Publish Dialog="ExitDialog"
+                Control="Finish"
+                Event="DoAction"
+                Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch StreamProtocol" />
+    
+    <InstallExecuteSequence>
+      <Custom Action="RegisterStreamProtocols" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="UnregisterStreamProtocols" After="InstallInitialize">REMOVE="ALL"</Custom>
+    </InstallExecuteSequence>
+    
+    <Property Id="WixShellExecTarget" Value="[#StreamProtocolEXE]" />
+    <CustomAction Id="LaunchApplication" 
+        BinaryKey="WixCA" 
+        DllEntry="WixShellExec"
+        Impersonate="yes" />
+
+   <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+
+  </Product>
+
+  <Fragment>
+    <Media Id="1" Cabinet="Data.cab" EmbedCab="yes" DiskPrompt="Data.cab" />
+    <Property Id="DiskPrompt" Value="Data.cab" />
+  </Fragment>
+  
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="StreamProtocol" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="StreamProtocol"/>
+        <Directory Id="StartupFolder" Name="Startup" />
+      </Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent" Guid="CD9927A6-957A-42D1-A750-DC262CCC2104">
+				<File Id="StreamProtocolEXE" Name="StreamProtocol.exe" DiskId="1" Source="$(var.StreamProtocol.TargetDir)StreamProtocol.exe" KeyPath="yes" />
+        <File Id="StreamProtocolConfig" Name="StreamProtocol.exe.config" DiskId="1" Source="$(var.StreamProtocol.TargetDir)StreamProtocol.exe.config" />
+        
+        <File Id="DelugeStreamEXE" Name="DelugeStream.exe" DiskId="1" Source="$(var.DelugeStream.TargetDir)DelugeStream.exe" />
+        <File Id="DelugeStreamConfig" Name="DelugeStream.exe.config" DiskId="1" Source="$(var.DelugeStream.TargetDir)DelugeStream.exe.config" />
+			</Component>
+		</ComponentGroup>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut" 
+              Name="StreamProtocol" 
+              Target="[!StreamProtocolEXE]"
+              WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\StreamProtocol" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+
+      <Component Id="CreateStartupShortcut" Guid="*">
+        <Shortcut Id="ApplicationAutoStartShortcut"
+                Directory="StartupFolder"
+                Name="StreamProtocol"
+                Target="[!StreamProtocolEXE]"
+                WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+      <RemoveFile Id="ApplicationAutoStartShortcut" On="uninstall" Name="StreamProtocol.*" />  
+      <RegistryValue Root="HKCU" Key="Software\StreamProtocol" Name="autostart" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+	</Fragment>
+
+  <Fragment>
+    <CustomAction Id="RegisterStreamProtocols" Directory="INSTALLFOLDER"
+              Execute="deferred" Impersonate="no" Return="ignore"
+              ExeCommand="[#StreamProtocolEXE] /register" />
+    <CustomAction Id="UnregisterStreamProtocols" Directory="INSTALLFOLDER"
+              Execute="deferred" Impersonate="no" Return="ignore"
+              ExeCommand="[#StreamProtocolEXE] /unregister" />
+  </Fragment>
+ 
+</Wix>
