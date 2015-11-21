@@ -4,21 +4,183 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>StreamProtocol</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/superhero/bootstrap.min.css" rel="stylesheet" integrity="sha256-o0IkLyCCWGBI+ryg6bL44/f8s4cb7+5bncR4LvU57a8= sha512-jptu6vg45XTY9uPX3vD5nHN4vASCN2hHl+fhmgkdd/px/bFHKMXmDXhkNmTiCpKqH6sliEPFakl2KZNav2Zo1Q==" crossorigin="anonymous">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
   <body>
-    <h1>Hello, world!</h1>
+     <div class="jumbotron">
+      <div class="container">
+        <h1>StreamProtocol</h1>
+        <p>Easy one-click streaming of files and torrents in external players of your choice.</p>
+        <p><a class="btn btn-primary btn-lg" href="#">Download for Windows v1.0.0 BETA</a></p>
+      </div>
+    </div>
+     
+     <div class="container">
+      <div class="row">
+        <h1>Supported Websites</h1>
+        <div class="col-md-4">
+          <h2>Twitch and HitBox</h2>
+          <p>GreaseMonkey script adding a button to Twitch and HitBox. This makes it easier than ever to watch streams in an external media player. Originally by <a style="font-size: 2px;" href="https://twitter.com/Winceptor">wincestor</a>.</p>
+          <p><button class="btn btn-default" data-toggle="modal" data-target="#twitchGif">View demo</button>
+          <a class="btn btn-default" href="https://greasyfork.org/en/scripts/14072-streamprotocol-for-twitch-and-hitbox" target="_blank" role="button">Get script &raquo;</a></p>
+          
+          
+          <div id="twitchGif" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <img src="twitch-lirik.gif" class="img-responsive">
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-md-4">
+          <h2>LegitTorrent</h2>
+          <p><a href="http://www.legittorrents.info/">LegitTorrent</a> is an excellent place to use the torrent streaming functionality. Just expand the filelist and go nuts.</p>
+          <a class="btn btn-default" href="https://greasyfork.org/en/scripts/14077-streamprotocol-for-legaltorrents" target="_blank" role="button">Get script &raquo;</a></p>
+       </div>
+       <div class="col-md-4">
+          <h2>Demo website</h2>
+          <p>A small website that shows the type of links supported by StreamProtocol.</p>
+          <p><a class="btn btn-default" target="_blank" href="https://jsbin.com/kodutudeze/edit?html,output" role="button">View demo page</a></p>
+        </div>
+      </div>
+     
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Something missing?</h2>
+          <p>Created an extention or found a nice website you think would benefit from a GreaseMonkey extension, feel free to request it.
+          <br/>Did you find a website natively supporting StreamProtocol? I'd love to add it!
+          </p>
+          <p><a class="btn btn-default" href="https://github.com/JohnDoee/StreamProtocol/issues" role="button">Request here</a></p>
+        </div>
+      </div>
+      
+      <hr>
+      
+      <div class="row">
+        <h1>Supported Stream Players</h1>
+        <div class="col-md-4">
+          <h2>VLC Media Player</h2>
+          <p>VLC can be downloaded <a href="http://www.videolan.org/vlc/index.html">here</a> and is detected out of the box.</p>
+          <p><button class="btn btn-default" data-toggle="modal" data-target="#pickVlcGif">View demo</button></p>
+          
+          <div id="pickVlcGif" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <img src="pick-player.gif" class="img-responsive">
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-md-4">
+          <h2>Media Player Classic - HC</h2>
+          <p>MPC-HC can be downloaded <a href="https://mpc-hc.org/">here</a> and is detected out of the box.</p>
+       </div>
+        <div class="col-md-4">
+          <h2>Any Video Player</h2>
+          <p>Most Video Players can play HTTP Links but are currently not auto-detected by StreamProtocol. You can just point StreamProtocol to the main executable for your favourite media player and enjoy video in it.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Add additional players?</h2>
+          <p>Feel free to send a suggestion if you know of a nice media player you think StreamProtocol should support directly.</p>
+          <p><a class="btn btn-default" href="https://github.com/JohnDoee/StreamProtocol/issues" role="button">Request here</a></p>
+        </div>
+      </div>
+     
+     <hr>
+     
+     <div class="row">
+      <h1>Supported Torrent Clients</h1>
+      <div class="col-md-4">
+        <h2>Deluge Streaming</h2>
+        <p>Currently, only Deluge through my plugin is supported directly. Information about my Deluge Streaming plugin <a href="http://forum.deluge-torrent.org/viewtopic.php?f=9&t=49679">can be found here</a>.
+        For this to work, you will need to have GTK UI with the plugin installed, running locally.<br />This plugin works best when used in combination with GreaseMonkey scripts to modify websites with Torrents.</p>
+        <p><a class="btn btn-default" target="_blank" href="http://forum.deluge-torrent.org/viewtopic.php?f=9&t=49679" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>Other Streaming Torrent Clients</h2>
+        <p>There are plenty of streaming torrent clients out there. One example is Butter Project. These are currently not autodetected but you can just point StreamProtocol to their executable and everything should work.</p>
+     </div>
+      <div class="col-md-4">
+        <h2>Add an additional client?</h2>
+        <p>Feel free to send a suggestion if you know of a client that can stream and you want direct support for it.</p>
+        <p><a class="btn btn-default" href="https://github.com/JohnDoee/StreamProtocol/issues" role="button">Request here</a></p>
+      </div>
+    </div>
+
+      <hr>
+    
+    <div class="row">
+      <h1>Instructions</h1>
+      <div class="col-md-6">
+        <h2>Installation</h2>
+        <p>
+          <ul>
+            <li>Download</li>
+            <li>Install</li>
+            <li>Right-click tray icon and select a player for HTTP and, optionally, one for Torrent (if you want to stream torrents)</li>
+          </ul>
+        </p>
+        <p><a class="btn btn-default" target="_blank" href="http://forum.deluge-torrent.org/viewtopic.php?f=9&t=49679" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-6">
+        <h2>Usage</h2>
+        <p>
+          <ul>
+            <li>Install <a href="https://addons.mozilla.org/en-us/firefox/addon/greasemonkey/">GreaseMonkey (Firefox)</a> or <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en">TamperMonkey (Chrome)</a></li>
+            <li>Install some addons for GreaseMonkey / TamperMonkey to modify your favourite websites</li>
+            <li>NOTICE: Make sure you <b>DO NOT</b> check the <a href="#" data-toggle="modal" data-target="#remembermychoice-firefox">"Remember my choice for stream+x links" (Firefox)</a> or <a href="#" data-toggle="modal" data-target="#remembermychoice-chrome">"Remember my choice for all links of this type" (Chrome)</a>.
+            StreamProtocol is not fully tested (hence the beta tag) and can therefore be abused if the box is checked and you visit a malicious website.<br />
+            Just click "OK" (Firefox) and "Launch application" (Chrome) every time it pops up and you want to stream the clicked item.
+            </li>
+          </ul>
+          
+          <div id="remembermychoice-firefox" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <img src="firefox-donotcheck.png" class="img-responsive">
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+          <div id="remembermychoice-chrome" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                      <img src="chrome-donotcheck.png" class="img-responsive">
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+        </p>
+     </div>
+    </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; TidalStream 2015</p>
+      </footer>
+    </div> <!-- /container -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
