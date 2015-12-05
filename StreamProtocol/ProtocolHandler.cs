@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace StreamProtocol
@@ -168,7 +169,12 @@ namespace StreamProtocol
         public virtual void Execute(ProtocolApplication app, string url)
         {
             url = RewriteUrl(url);
-            Process.Start(app.FilePath, app.FileArguments.Replace("%1", url));
+            Process.Start(app.FilePath, app.FileArguments.Replace("%1", escapeString(url)));
+        }
+
+        internal string escapeString(string str)
+        {
+            return Regex.Replace(str, @"(\\+)$", @"$1$1");
         }
     }
 
@@ -226,7 +232,7 @@ namespace StreamProtocol
             
             var fileArguments = app.FileArguments;
             for (int i = 1; i <= urlParts.Count(); i++)
-                fileArguments = fileArguments.Replace($"\"%{i}\"", $"\"{urlParts[i - 1]}\"");
+                fileArguments = fileArguments.Replace($"\"%{i}\"", $"\"{escapeString(urlParts[i - 1])}\"");
 
             Debug.WriteLine("Resulting file:{0} arguments:{1}", app.FilePath, fileArguments);
             Process.Start(app.FilePath, fileArguments);
@@ -269,7 +275,9 @@ namespace StreamProtocol
         }
         public static void HandleUrl(string url)
         {
-            var scheme = url.Split(':')[0].ToLower();
+            var parsedUrl = new Uri(url);
+            
+            var scheme = parsedUrl.Scheme.ToLower();
             foreach (var ph in GetProtocolHandlers())
             {
                 if (!ph.GetProtocols().Contains(scheme))
@@ -277,7 +285,11 @@ namespace StreamProtocol
 
                 var app = ph.GetApplications().Find((a) => a.CurrentlySelected);
                 if (app != null)
-                    ph.Execute(app, url);
+                {
+                    if (AllowedSites.IsUrlAllowed(parsedUrl))
+                        ph.Execute(app, url);
+                    return;
+                }
             }
         }
     }

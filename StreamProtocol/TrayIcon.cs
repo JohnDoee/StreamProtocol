@@ -61,7 +61,9 @@ namespace StreamProtocol
             }
 
             trayMenu.MenuItems.Add("-");
+            trayMenu.MenuItems.Add("Manage allowed sites", OnSitesManager);
             trayMenu.MenuItems.Add("About", OnAbout);
+            trayMenu.MenuItems.Add("-");
             trayMenu.MenuItems.Add("Exit", OnExit);
 
             trayIcon.ContextMenu = trayMenu;
@@ -112,6 +114,12 @@ namespace StreamProtocol
                 var app = new ProtocolApplication(executable.Split('\\').Last(), executable);
                 OnSelectApplication(sender, e, handler, app);
             }
+        }
+
+        private void OnSitesManager(object sender, EventArgs e)
+        {
+            var dialog = new AllowedSitesManager();
+            dialog.Show();
         }
 
         private void OnAbout(object sender, EventArgs e)
