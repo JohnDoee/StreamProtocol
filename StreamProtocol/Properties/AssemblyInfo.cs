@@ -19,7 +19,7 @@ Icon: Copyright (c) 2014 Drifty (http://drifty.com/) - MIT License")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TidalStream")]
 [assembly: AssemblyProduct("StreamProtocol")]
-[assembly: AssemblyCopyright("Copyright © Anders Jensen 2015")]
+[assembly: AssemblyCopyright("Copyright © Anders Jensen 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -38,5 +38,5 @@ Icon: Copyright (c) 2014 Drifty (http://drifty.com/) - MIT License")]
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.0")]
-[assembly: AssemblyFileVersion("1.1.0")]
+[assembly: AssemblyVersion("1.2.0")]
+[assembly: AssemblyFileVersion("1.2.0")]

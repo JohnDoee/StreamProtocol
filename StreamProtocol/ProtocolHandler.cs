@@ -188,88 +188,12 @@ namespace StreamProtocol
         }
     }
 
-    class TorrentProtocolHandler : ProtocolHandler
-    {
-        public TorrentProtocolHandler()
-        {
-            Name = "Torrent";
-            BaseScheme = "torrent";
-
-            addAdditionalApplications();
-        }
-
-        public virtual void addAdditionalApplications()
-        {
-            var baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var executablePath = Path.Combine(baseDirectory, "DelugeStream.exe");
-            Applications = new List<ProtocolApplication> { new ProtocolApplication("Deluge Streamer", executablePath, "\"%1\" \"%2\" \"%3\"") };
-        }
-
-        public override void Execute(ProtocolApplication app, string url)
-        {
-            url = RewriteUrl(url);
-
-            var newUrl = url.Split('#');
-
-            var urlParts = new List<string> { newUrl[0] };
-            
-            if (newUrl.Count() > 1)
-            {
-                NameValueCollection query = HttpUtility.ParseQueryString(newUrl[1]);
-                
-                var file = query.Get("file");
-                if (file != null)
-                    urlParts.Add(file);
-                else
-                    urlParts.Add("");
-
-                var infohash = query.Get("infohash");
-                if (infohash != null)
-                    urlParts.Add(infohash);
-                else
-                    urlParts.Add("");
-            }
-            
-            var fileArguments = app.FileArguments;
-            for (int i = 1; i <= urlParts.Count(); i++)
-                fileArguments = fileArguments.Replace($"\"%{i}\"", $"\"{escapeString(urlParts[i - 1])}\"");
-
-            Debug.WriteLine("Resulting file:{0} arguments:{1}", app.FilePath, fileArguments);
-            Process.Start(app.FilePath, fileArguments);
-
-        }
-
-    }
-
-    class MagnetProtocolHandler : TorrentProtocolHandler
-    {
-        public MagnetProtocolHandler()
-        {
-            Name = "Magnet";
-            BaseScheme = "magnet";
-        }
-
-        public override void addAdditionalApplications() { }
-
-        public override string RewriteUrl(string Url)
-        {
-            return Url;
-        }
-
-        public override List<string> GetProtocols()
-        {
-            return new List<string> { $"{BaseScheme}" };
-        }
-    }
-
     class ProtocolHandlerManager
     {
         public static List<ProtocolHandler> GetProtocolHandlers()
         {
             var ProtocolHandlers = new List<ProtocolHandler>();
             ProtocolHandlers.Add(new HTTPProtocolHandler());
-            ProtocolHandlers.Add(new TorrentProtocolHandler());
-            ProtocolHandlers.Add(new MagnetProtocolHandler());
 
             return ProtocolHandlers;
         }

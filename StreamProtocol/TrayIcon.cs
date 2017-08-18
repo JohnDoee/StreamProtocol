@@ -28,35 +28,47 @@ namespace StreamProtocol
             UpdateTrayMenu();
         }
 
+        private void addToMenu(Menu menuItem, ProtocolHandler handler, bool showRemove = true, string browseText = "Browse for filetype handler")
+        {
+            var browseMenuItem = menuItem.MenuItems.Add(browseText);
+            browseMenuItem.Click += new EventHandler((s, e) => OnHandlerSelect(s, e, handler));
+
+            var apps = handler.GetApplications();
+            foreach (var app in apps)
+            {
+                if (app.Enabled)
+                {
+                    var subMenuItem = menuItem.MenuItems.Add($"Open with {app.Name}");
+                    subMenuItem.Click += new EventHandler((s, e) => OnSelectApplication(s, e, handler, app));
+                    if (app.CurrentlySelected)
+                        subMenuItem.Checked = true;
+                }
+
+            }
+            if (apps.Any((app) => app.CurrentlySelected) && showRemove)
+            {
+                menuItem.MenuItems.Add("-");
+                var removeMenuItem = menuItem.MenuItems.Add("Remove protocol");
+                removeMenuItem.Click += new EventHandler((s, e) => OnDisableHandler(s, e, handler));
+            }
+
+        }
+
         private void UpdateTrayMenu()
         {
             trayMenu = new ContextMenu();
 
-            foreach (var handler in ProtocolHandlerManager.GetProtocolHandlers())
+            if (ProtocolHandlerManager.GetProtocolHandlers().Count() == 1)
             {
-                var subMenu = new MenuItem($"Protocol {handler.Name}");
-                //subMenu.Checked = true;
-                trayMenu.MenuItems.Add(subMenu);
-                var browseMenuItem = subMenu.MenuItems.Add("Browse for file");
-                browseMenuItem.Click += new EventHandler((s, e) => OnHandlerSelect(s, e, handler));
+                this.addToMenu(trayMenu, ProtocolHandlerManager.GetProtocolHandlers().First(), false, "Browse for media player executable");
 
-                var apps = handler.GetApplications();
-                foreach (var app in apps)
+            } else {
+                foreach (var handler in ProtocolHandlerManager.GetProtocolHandlers())
                 {
-                    if (app.Enabled)
-                    {
-                        var menuItem = subMenu.MenuItems.Add($"Open with {app.Name}");
-                        menuItem.Click += new EventHandler((s, e) => OnSelectApplication(s, e, handler, app));
-                        if (app.CurrentlySelected)
-                            menuItem.Checked = true;
-                    }
-
-                }
-                if (apps.Any((app) => app.CurrentlySelected))
-                {
-                    subMenu.MenuItems.Add("-");
-                    var removeMenuItem = subMenu.MenuItems.Add("Remove protocol");
-                    removeMenuItem.Click += new EventHandler((s, e) => OnDisableHandler(s, e, handler));
+                    var subMenu = new MenuItem($"Protocol {handler.Name}");
+                    //subMenu.Checked = true;
+                    trayMenu.MenuItems.Add(subMenu);
+                    this.addToMenu(subMenu, handler, false);
                 }
             }
 

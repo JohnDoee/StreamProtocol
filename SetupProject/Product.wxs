@@ -70,8 +70,6 @@
 				<File Id="StreamProtocolEXE" Name="StreamProtocol.exe" DiskId="1" Source="$(var.StreamProtocol.TargetDir)StreamProtocol.exe" KeyPath="yes" />
         <File Id="StreamProtocolConfig" Name="StreamProtocol.exe.config" DiskId="1" Source="$(var.StreamProtocol.TargetDir)StreamProtocol.exe.config" />
         
-        <File Id="DelugeStreamEXE" Name="DelugeStream.exe" DiskId="1" Source="$(var.DelugeStream.TargetDir)DelugeStream.exe" />
-        <File Id="DelugeStreamConfig" Name="DelugeStream.exe.config" DiskId="1" Source="$(var.DelugeStream.TargetDir)DelugeStream.exe.config" />
 			</Component>
 		</ComponentGroup>
     <DirectoryRef Id="ApplicationProgramsFolder">
